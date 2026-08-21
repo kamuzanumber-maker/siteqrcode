@@ -1,0 +1,8 @@
+# ================================================================
+#  _redirects — Regras de redirecionamento (Cloudflare Pages)
+#  Garante que todas as rotas não encontradas voltem ao index.html
+#  (SPA fallback). Não é estritamente necessário para este projeto,
+#  mas evita erros 404 inesperados.
+# ================================================================
+
+/*  /index.html  200

@@ -1,0 +1,30 @@
+# ================================================================
+#  wrangler.toml — Configuração do Cloudflare Pages
+# ================================================================
+#
+#  Este arquivo é opcional se você fizer o deploy pelo Dashboard.
+#  Ele é necessário apenas se quiser usar o CLI do Wrangler:
+#    npm install -g wrangler
+#    wrangler pages deploy . --project-name=siteqrcode
+#
+# ================================================================
+
+name = "siteqrcode"
+compatibility_date = "2024-09-23"
+
+# ── Variáveis de ambiente (valores de exemplo — sobrescreva no Dashboard) ──
+# As variáveis abaixo ficam VISÍVEIS neste arquivo.
+# Para manter a senha segreta, prefira defini-la pelo Dashboard:
+#   Cloudflare Dashboard → Pages → <projeto> → Settings → Environment variables
+#
+# [vars]
+# PAGE_PASSWORD = "MINHA_SENHA"
+# REDIRECT_URL  = "https://MEU-LINK-DO-NEXTCLOUD"
+
+# ── Assets estáticos ──
+[assets]
+directory = "."
+
+# ── Pages Functions ──
+# As funções em functions/ são detectadas automaticamente pelo Cloudflare Pages.
+# Não é necessário configuração adicional para functions/api/verify.js.

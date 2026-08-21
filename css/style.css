@@ -1,0 +1,864 @@
+/* ================================================================
+   STYLE.CSS — Estilos globais: pixel art kawaii, glassmorphism,
+               animações, responsividade completa
+   ================================================================ */
+
+/* ── Google Fonts já carregadas no HTML ── */
+
+/* ─────────────────────────────────────────
+   Variáveis de tema
+───────────────────────────────────────── */
+:root {
+  --bg1:        #1a0533;
+  --bg2:        #3b1060;
+  --bg3:        #7b3fa0;
+  --pink:       #f9a8d4;
+  --pink2:      #e879a0;
+  --lilac:      #c084fc;
+  --lilac2:     #a855f7;
+  --blue:       #a5b4fc;
+  --white:      #fffafd;
+  --text:       #f3e8ff;
+  --text2:      #d8b4fe;
+  --text-dark:  #4a2060;
+  --glass:      rgba(255, 255, 255, 0.10);
+  --glass2:     rgba(255, 255, 255, 0.18);
+  --border:     rgba(255, 255, 255, 0.20);
+  --shadow:     rgba(80, 0, 120, 0.45);
+  --error:      #f87171;
+  --success:    #86efac;
+  --radius:     22px;
+  --radius-sm:  14px;
+  --trans:      0.3s cubic-bezier(.4,0,.2,1);
+}
+
+/* ─────────────────────────────────────────
+   Reset & base
+───────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  font-family: 'DM Sans', sans-serif;
+  color: var(--text);
+  overflow-x: hidden;
+}
+
+body {
+  min-height: 100dvh;
+  background: linear-gradient(160deg, var(--bg1) 0%, var(--bg2) 50%, var(--bg3) 100%);
+  background-attachment: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+img { display: block; pointer-events: none; }
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  outline: none;
+}
+
+button:focus-visible {
+  outline: 2px solid var(--lilac);
+  outline-offset: 3px;
+}
+
+/* ─────────────────────────────────────────
+   Partículas de fundo (ambiente)
+───────────────────────────────────────── */
+.particles-ambient {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.particle-ambient {
+  position: absolute;
+  opacity: 0;
+  animation: floatUp linear infinite;
+  user-select: none;
+}
+
+@keyframes floatUp {
+  0%   { transform: translateY(105vh) rotate(0deg); opacity: 0; }
+  8%   { opacity: 0.55; }
+  92%  { opacity: 0.35; }
+  100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+}
+
+/* Partículas de burst */
+.particle-burst {
+  position: fixed;
+  pointer-events: none;
+  user-select: none;
+  z-index: 9999;
+}
+
+/* ─────────────────────────────────────────
+   Telas (screens)
+───────────────────────────────────────── */
+.screen {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+  transition: opacity 0.45s ease, transform 0.45s cubic-bezier(.34,1.1,.64,1);
+}
+
+.screen.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.97);
+}
+
+.screen.visible {
+  opacity: 0;
+  pointer-events: all;
+}
+
+.screen.anim-in {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* ─────────────────────────────────────────
+   Botão de música
+───────────────────────────────────────── */
+.music-btn {
+  position: fixed;
+  top: 14px;
+  right: 14px;
+  z-index: 999;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--glass2);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--border);
+  font-size: 1.1rem;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform var(--trans), background var(--trans), opacity var(--trans);
+  box-shadow: 0 2px 12px var(--shadow);
+}
+
+.music-btn:hover { transform: scale(1.12); background: var(--glass); }
+.music-btn.muted { opacity: 0.55; }
+.music-btn.hidden { display: none; }
+
+/* ─────────────────────────────────────────
+   Botões reutilizáveis
+───────────────────────────────────────── */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.85rem 2.2rem;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, var(--pink2) 0%, var(--lilac2) 100%);
+  color: #fff;
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  box-shadow: 0 4px 20px rgba(168, 85, 247, 0.45);
+  transition: transform var(--trans), box-shadow var(--trans), filter var(--trans);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.22) 0%, transparent 55%);
+}
+
+.btn-primary:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 8px 28px rgba(168, 85, 247, 0.6);
+  filter: brightness(1.08);
+}
+
+.btn-primary:active { transform: translateY(0) scale(0.97); }
+.btn-primary:disabled { opacity: 0.65; cursor: not-allowed; transform: none; }
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.75rem 1.8rem;
+  border-radius: var(--radius-sm);
+  background: var(--glass2);
+  backdrop-filter: blur(10px);
+  border: 1.5px solid var(--border);
+  color: var(--text);
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: transform var(--trans), background var(--trans), box-shadow var(--trans);
+  box-shadow: 0 2px 12px var(--shadow);
+}
+
+.btn-secondary:hover {
+  transform: translateY(-2px);
+  background: rgba(255,255,255,0.22);
+  box-shadow: 0 6px 20px var(--shadow);
+}
+
+.btn-ghost {
+  background: none;
+  border: 1.5px solid var(--border);
+  color: var(--text2);
+  padding: 0.6rem 1.4rem;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  transition: color var(--trans), border-color var(--trans), transform var(--trans);
+}
+
+.btn-ghost:hover {
+  color: var(--text);
+  border-color: var(--lilac);
+  transform: translateX(4px);
+}
+
+/* Spinner do botão de senha */
+.btn-spinner {
+  width: 18px; height: 18px;
+  border: 2.5px solid rgba(255,255,255,0.35);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ─────────────────────────────────────────
+   Elemento coração pulsante
+───────────────────────────────────────── */
+.heart {
+  display: inline-block;
+  color: var(--pink);
+  animation: heartbeat 1.8s ease-in-out infinite;
+}
+
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  14%       { transform: scale(1.25); }
+  28%       { transform: scale(1); }
+  42%       { transform: scale(1.15); }
+  56%       { transform: scale(1); }
+}
+
+/* ─────────────────────────────────────────
+   TELA INICIAL
+───────────────────────────────────────── */
+.screen-intro {
+  background: transparent;
+}
+
+.intro-card {
+  position: relative;
+  max-width: 420px;
+  width: 100%;
+  background: var(--glass);
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  border: 1.5px solid var(--border);
+  border-radius: 28px;
+  padding: 2.4rem 2rem 2.2rem;
+  box-shadow: 0 12px 48px var(--shadow), inset 0 1px 0 rgba(255,255,255,0.12);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  text-align: center;
+  animation: cardIn 0.7s cubic-bezier(.34,1.3,.64,1) both;
+}
+
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(36px) scale(0.95); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.intro-gif-top {
+  width: 110px;
+  height: 110px;
+  object-fit: contain;
+  margin-bottom: 0.5rem;
+  filter: drop-shadow(0 4px 14px rgba(249,168,212,0.5));
+  animation: floatGif 4s ease-in-out infinite;
+}
+
+@keyframes floatGif {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-8px); }
+}
+
+.intro-gif-side {
+  width: 70px;
+  height: 70px;
+  object-fit: contain;
+  position: absolute;
+  bottom: 72px;
+  right: -28px;
+  filter: drop-shadow(0 2px 8px rgba(192,132,252,0.4));
+  animation: floatGif 5s ease-in-out infinite reverse;
+}
+
+.intro-content {
+  margin-bottom: 1.6rem;
+}
+
+.intro-emoji {
+  font-size: 2.6rem;
+  margin-bottom: 0.5rem;
+  animation: bounce 2s ease-in-out infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-8px); }
+}
+
+.intro-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 2.2rem;
+  color: var(--white);
+  line-height: 1.1;
+  margin-bottom: 0.6rem;
+}
+
+.intro-sub {
+  font-size: 1rem;
+  color: var(--text2);
+  margin-bottom: 0.4rem;
+}
+
+.intro-hint {
+  font-size: 0.82rem;
+  color: var(--lilac);
+  opacity: 0.8;
+}
+
+.intro-footer {
+  margin-top: 1rem;
+  font-size: 0.72rem;
+  color: var(--text2);
+  opacity: 0.5;
+}
+
+/* ─────────────────────────────────────────
+   TELA DO JOGO
+───────────────────────────────────────── */
+.screen-game {
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 0.75rem;
+  align-items: center;
+  justify-content: center;
+}
+
+/* HUD */
+.game-hud {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  z-index: 20;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.jump-counter-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--glass);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+  border-radius: 50px;
+  padding: 0.35rem 1.1rem;
+}
+
+.counter-label {
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text2);
+  opacity: 0.7;
+  line-height: 1;
+}
+
+.jump-counter {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.3rem;
+  color: var(--white);
+  letter-spacing: 0.05em;
+  line-height: 1.2;
+  transition: transform 0.15s ease;
+}
+
+.jump-counter.pop {
+  transform: scale(1.3);
+  color: var(--pink);
+}
+
+.counter-hearts {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 220px;
+}
+
+.hud-heart {
+  font-size: 0.85rem;
+  color: var(--text2);
+  opacity: 0.35;
+  transition: all 0.3s ease;
+}
+
+.hud-heart.filled {
+  color: var(--pink);
+  opacity: 1;
+  animation: popHeart 0.35s ease;
+}
+
+@keyframes popHeart {
+  0%   { transform: scale(0.5); }
+  60%  { transform: scale(1.4); }
+  100% { transform: scale(1); }
+}
+
+.game-hint {
+  font-size: 0.72rem;
+  color: var(--text2);
+  opacity: 0.45;
+  text-align: center;
+  z-index: 20;
+}
+
+/* Canvas wrapper */
+.canvas-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 640px;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1.5px solid var(--border);
+  box-shadow: 0 8px 32px var(--shadow);
+  z-index: 20;
+}
+
+#game-canvas {
+  display: block;
+  width: 100%;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+/* Overlay de game over */
+.gameover-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(26, 5, 51, 0.88);
+  backdrop-filter: blur(8px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  z-index: 30;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.gameover-overlay.hidden {
+  display: none;
+}
+
+.gameover-overlay.show {
+  opacity: 1;
+  pointer-events: all;
+  display: flex;
+}
+
+.gameover-gif {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 10px rgba(249,168,212,0.4));
+  animation: floatGif 3s ease-in-out infinite;
+}
+
+.gameover-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.5rem;
+  color: var(--white);
+}
+
+.gameover-sub {
+  font-size: 0.9rem;
+  color: var(--text2);
+  margin-bottom: 0.4rem;
+}
+
+/* ─────────────────────────────────────────
+   TELA DE VITÓRIA
+───────────────────────────────────────── */
+.screen-win {
+  background: transparent;
+}
+
+.win-card {
+  max-width: 400px;
+  width: 100%;
+  background: var(--glass);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1.5px solid var(--border);
+  border-radius: 28px;
+  padding: 2.4rem 2rem;
+  box-shadow: 0 12px 48px var(--shadow);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  text-align: center;
+}
+
+.win-gif {
+  width: 130px;
+  height: 130px;
+  object-fit: contain;
+  filter: drop-shadow(0 6px 18px rgba(249,168,212,0.55));
+  animation: floatGif 3.5s ease-in-out infinite;
+}
+
+.win-stars {
+  font-size: 1.1rem;
+  color: var(--pink);
+  letter-spacing: 0.5rem;
+  animation: shimmer 2s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0%, 100% { opacity: 0.7; }
+  50%       { opacity: 1; text-shadow: 0 0 10px var(--pink); }
+}
+
+.win-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.9rem;
+  color: var(--white);
+}
+
+.win-sub {
+  font-size: 0.95rem;
+  color: var(--text2);
+}
+
+.win-lock-hint {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: rgba(192,132,252,0.12);
+  border: 1px solid rgba(192,132,252,0.25);
+  border-radius: 50px;
+  padding: 0.5rem 1.2rem;
+  font-size: 0.82rem;
+  color: var(--lilac);
+}
+
+.win-lock-icon { font-size: 1.1rem; }
+
+/* ─────────────────────────────────────────
+   TELA DE SENHA
+───────────────────────────────────────── */
+.screen-password {
+  background: transparent;
+}
+
+.password-card {
+  max-width: 400px;
+  width: 100%;
+  background: var(--glass);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1.5px solid var(--border);
+  border-radius: 28px;
+  padding: 2.2rem 2rem 2.4rem;
+  box-shadow: 0 12px 48px var(--shadow), inset 0 1px 0 rgba(255,255,255,0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  text-align: center;
+}
+
+.password-gif {
+  width: 90px;
+  height: 90px;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 12px rgba(249,168,212,0.4));
+  animation: floatGif 4s ease-in-out infinite;
+  margin-bottom: 0.2rem;
+}
+
+.lock-icon-wrap {
+  font-size: 2.2rem;
+  animation: pulse 3s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); filter: none; }
+  50%       { transform: scale(1.08); filter: drop-shadow(0 0 8px var(--lilac)); }
+}
+
+.password-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.65rem;
+  color: var(--white);
+}
+
+.password-sub {
+  font-size: 0.88rem;
+  color: var(--text2);
+  margin-bottom: 0.6rem;
+}
+
+#password-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.input-wrap {
+  position: relative;
+  width: 100%;
+}
+
+.input-wrap input {
+  width: 100%;
+  padding: 0.85rem 3rem 0.85rem 1.1rem;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--border);
+  background: rgba(255, 255, 255, 0.07);
+  color: var(--white);
+  font-family: inherit;
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  outline: none;
+  transition: border-color var(--trans), background var(--trans), box-shadow var(--trans);
+}
+
+.input-wrap input::placeholder {
+  color: var(--text2);
+  opacity: 0.5;
+  font-size: 0.88rem;
+  letter-spacing: 0;
+}
+
+.input-wrap input:focus {
+  border-color: var(--lilac);
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 0 0 4px rgba(192,132,252,0.2);
+}
+
+.toggle-password {
+  position: absolute;
+  right: 0.8rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-size: 1.05rem;
+  color: var(--text2);
+  cursor: pointer;
+  padding: 0.2rem;
+  transition: color var(--trans), transform var(--trans);
+}
+
+.toggle-password:hover {
+  color: var(--lilac);
+  transform: translateY(-50%) scale(1.2);
+}
+
+/* Mensagem de erro/sucesso */
+.password-message {
+  min-height: 1.4rem;
+  font-size: 0.88rem;
+  font-weight: 500;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  border-radius: 8px;
+}
+
+.password-message.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.password-message.error   { color: var(--error); }
+.password-message.success { color: var(--success); }
+
+/* Shake no erro */
+.input-wrap.shake input {
+  animation: shake 0.45s ease;
+  border-color: var(--error) !important;
+  box-shadow: 0 0 0 4px rgba(248,113,113,0.2) !important;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%       { transform: translateX(-8px); }
+  40%       { transform: translateX(8px); }
+  60%       { transform: translateX(-5px); }
+  80%       { transform: translateX(5px); }
+}
+
+/* ─────────────────────────────────────────
+   TELA DE SUCESSO
+───────────────────────────────────────── */
+.screen-success {
+  background: transparent;
+}
+
+.success-card {
+  max-width: 380px;
+  width: 100%;
+  background: var(--glass);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1.5px solid var(--border);
+  border-radius: 28px;
+  padding: 2.6rem 2rem;
+  box-shadow: 0 12px 48px var(--shadow);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+  text-align: center;
+}
+
+.success-gif {
+  width: 140px;
+  height: 140px;
+  object-fit: contain;
+  filter: drop-shadow(0 6px 22px rgba(249,168,212,0.6));
+  animation: successPop 0.6s cubic-bezier(.34,1.56,.64,1) both, floatGif 3s ease-in-out 0.6s infinite;
+}
+
+@keyframes successPop {
+  from { transform: scale(0.4) rotate(-15deg); opacity: 0; }
+  to   { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+.success-stars {
+  font-size: 1.2rem;
+  color: var(--pink);
+  letter-spacing: 0.6rem;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+.success-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 2rem;
+  color: var(--white);
+  animation: fadeInUp 0.5s 0.3s ease both;
+}
+
+.success-sub {
+  font-size: 0.9rem;
+  color: var(--text2);
+  animation: fadeInUp 0.5s 0.45s ease both;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Loader de bolinhas */
+.success-loader {
+  display: flex;
+  gap: 8px;
+  margin-top: 0.5rem;
+}
+
+.success-loader span {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--lilac);
+  animation: dotBounce 1.2s ease-in-out infinite;
+}
+
+.success-loader span:nth-child(2) { animation-delay: 0.2s; background: var(--pink); }
+.success-loader span:nth-child(3) { animation-delay: 0.4s; background: var(--blue); }
+
+@keyframes dotBounce {
+  0%, 80%, 100% { transform: scale(0.6); opacity: 0.5; }
+  40%            { transform: scale(1.2); opacity: 1; }
+}
+
+/* ─────────────────────────────────────────
+   Responsividade
+───────────────────────────────────────── */
+@media (max-width: 480px) {
+  .intro-card {
+    padding: 2rem 1.4rem 1.8rem;
+    border-radius: 22px;
+  }
+
+  .intro-gif-top  { width: 90px; height: 90px; }
+  .intro-gif-side { display: none; }
+  .intro-title    { font-size: 1.8rem; }
+
+  .canvas-wrap   { border-radius: 16px; }
+  .game-hud      { gap: 0.5rem; }
+  .counter-hearts { max-width: 160px; }
+
+  .win-card,
+  .password-card,
+  .success-card {
+    padding: 1.8rem 1.3rem;
+    border-radius: 22px;
+  }
+
+  .win-title      { font-size: 1.5rem; }
+  .success-title  { font-size: 1.6rem; }
+  .password-title { font-size: 1.4rem; }
+}
+
+@media (max-height: 600px) {
+  .screen-game { justify-content: flex-start; padding-top: 0.5rem; }
+  .intro-gif-top { width: 70px; height: 70px; }
+  .password-gif  { width: 60px; height: 60px; }
+}
+
+/* ─────────────────────────────────────────
+   Utilitário
+───────────────────────────────────────── */
+.hidden  { display: none !important; }
+.visible { display: flex !important; }
+
+/* Seleção de texto */
+::selection {
+  background: var(--lilac2);
+  color: var(--white);
+}

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Uma surpresa para você ♡</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐱</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- Partículas ambiente -->
+  <div id="particles-ambient" class="particles-ambient" aria-hidden="true"></div>
+
+  <!-- Botão de música (sempre visível após iniciar) -->
+  <button id="music-btn" class="music-btn hidden" aria-label="Controle de música" title="Ligar/desligar música">🎵</button>
+
+  <!-- ══════════════════════════════════════════
+       TELA INICIAL
+  ══════════════════════════════════════════ -->
+  <section id="screen-intro" class="screen screen-intro">
+    <div class="intro-card">
+
+      <!-- GIF Hello Kitty como decoração superior -->
+      <img
+        src="imagens/Hello Kitty Hearts Sticker.gif"
+        alt="Hello Kitty com corações"
+        class="intro-gif-top"
+        draggable="false"
+      />
+
+      <div class="intro-content">
+        <div class="intro-emoji">🐱</div>
+        <h1 class="intro-title">Oi! <span class="heart">♡</span></h1>
+        <p class="intro-sub">Tenho uma pequena surpresa para você...</p>
+        <p class="intro-hint">Complete o desafio do gatinho para descobrir <span class="heart">♡</span></p>
+      </div>
+
+      <!-- GIF My Melody como decoração lateral -->
+      <img
+        src="imagens/LINE Official Stickers - My Melody Pop-Up Stickers Example with GIF Animation.gif"
+        alt="My Melody"
+        class="intro-gif-side"
+        draggable="false"
+      />
+
+      <button id="btn-start" class="btn-primary">
+        Começar <span class="heart">♡</span>
+      </button>
+
+      <p class="intro-footer">Toque para pular • Espaço no teclado</p>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       TELA DO JOGO
+  ══════════════════════════════════════════ -->
+  <section id="screen-game" class="screen screen-game hidden">
+
+    <!-- HUD -->
+    <div class="game-hud">
+      <div class="jump-counter-wrap">
+        <span class="counter-label">pulos</span>
+        <span id="jump-counter" class="jump-counter">0 / 10</span>
+      </div>
+      <div class="counter-hearts" id="counter-hearts"></div>
+    </div>
+
+    <!-- Dica de controle -->
+    <p class="game-hint">toque / espaço para pular</p>
+
+    <!-- Canvas do jogo -->
+    <div class="canvas-wrap">
+      <canvas id="game-canvas"></canvas>
+
+      <!-- Overlay de Game Over -->
+      <div id="gameover-overlay" class="gameover-overlay hidden">
+        <img
+          src="imagens/LINE Official Stickers - My Melody Pop-Up Stickers Example with GIF Animation.gif"
+          alt="My Melody triste"
+          class="gameover-gif"
+          draggable="false"
+        />
+        <p class="gameover-title">Ops! 🥺</p>
+        <p class="gameover-sub">O gatinho tropeçou...</p>
+        <button id="btn-retry" class="btn-secondary">Tentar novamente <span class="heart">♡</span></button>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       TELA DE VITÓRIA
+  ══════════════════════════════════════════ -->
+  <section id="screen-win" class="screen screen-win hidden">
+    <div class="win-card">
+
+      <img
+        src="imagens/Valentines Day Love Sticker by Sanrio.gif"
+        alt="Sanrio comemorando"
+        class="win-gif"
+        draggable="false"
+      />
+
+      <div class="win-stars" aria-hidden="true">✦ ✧ ★ ✦ ✧</div>
+      <h2 class="win-title">Você conseguiu! <span class="heart">♡</span></h2>
+      <p class="win-sub">Mas ainda falta uma coisinha...</p>
+
+      <div class="win-lock-hint">
+        <span class="win-lock-icon">🔐</span>
+        <p>Uma área especial foi desbloqueada</p>
+      </div>
+
+      <button id="btn-skip-win" class="btn-ghost">Continuar →</button>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       TELA DE SENHA
+  ══════════════════════════════════════════ -->
+  <section id="screen-password" class="screen screen-password hidden">
+    <div class="password-card">
+
+      <!-- GIF decorativo -->
+      <img
+        src="imagens/Hello Kitty Hearts Sticker.gif"
+        alt="Hello Kitty"
+        class="password-gif"
+        draggable="false"
+      />
+
+      <div class="lock-icon-wrap">🔐</div>
+      <h2 class="password-title">Qual é a senha?</h2>
+      <p class="password-sub">Digite a senha para continuar <span class="heart">♡</span></p>
+
+      <form id="password-form" novalidate>
+        <div class="input-wrap">
+          <input
+            type="password"
+            id="password-input"
+            name="password"
+            placeholder="Digite a senha..."
+            autocomplete="current-password"
+            aria-label="Campo de senha"
+            aria-describedby="password-message"
+            required
+          />
+          <button
+            type="button"
+            id="toggle-password"
+            class="toggle-password"
+            aria-label="Mostrar ou ocultar senha"
+          >👁️</button>
+        </div>
+
+        <div id="password-message" class="password-message" role="alert" aria-live="polite"></div>
+
+        <button type="submit" class="btn-unlock btn-primary">
+          <span class="btn-text">Desbloquear <span class="heart">♡</span></span>
+          <span class="btn-spinner" style="display:none" aria-hidden="true"></span>
+        </button>
+      </form>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       TELA DE SUCESSO
+  ══════════════════════════════════════════ -->
+  <section id="screen-success" class="screen screen-success hidden">
+    <div class="success-card">
+
+      <img
+        src="imagens/Valentines Day Love Sticker by Sanrio.gif"
+        alt="Sanrio feliz"
+        class="success-gif"
+        draggable="false"
+      />
+
+      <div class="success-stars" aria-hidden="true">♡ ✦ ♡ ✦ ♡</div>
+      <h2 class="success-title">Acesso liberado! <span class="heart">♡</span></h2>
+      <p class="success-sub">Redirecionando...</p>
+
+      <div class="success-loader">
+        <span></span><span></span><span></span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Scripts — ordem importa: config antes dos outros -->
+  <script src="js/config.js"></script>
+  <script src="js/particles.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/game.js"></script>
+  <script src="js/screens.js"></script>
+  <script src="js/password.js"></script>
+  <script src="js/main.js"></script>
+
+  <!-- Exibe botão de música assim que o jogo começa -->
+  <script>
+    document.getElementById('btn-start').addEventListener('click', () => {
+      document.getElementById('music-btn').classList.remove('hidden');
+    }, { once: true });
+
+    // Preenche os corações do HUD
+    const heartsEl = document.getElementById('counter-hearts');
+    if (heartsEl) {
+      for (let i = 0; i < 10; i++) {
+        const s = document.createElement('span');
+        s.className = 'hud-heart';
+        s.id = `heart-${i}`;
+        s.textContent = '♡';
+        heartsEl.appendChild(s);
+      }
+    }
+  </script>
+
+</body>
+</html>

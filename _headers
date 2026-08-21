@@ -1,0 +1,12 @@
+# ================================================================
+#  _headers — Cabeçalhos HTTP para Cloudflare Pages
+#  Aplica cabeçalhos de segurança em todas as respostas.
+# ================================================================
+
+/*
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: no-referrer
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'
+  Cache-Control: no-store, no-cache
