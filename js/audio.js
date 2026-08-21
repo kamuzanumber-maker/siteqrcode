@@ -6,7 +6,7 @@ const Audio = (() => {
   let audio = null;
   let muted = false;
   let started = false;
-  const MUSIC_SRC = 'musica/Memo Boy, Chakra Efendi - Insomniac (SPOTISAVER) (1).mp3';
+  const MUSIC_SRC = 'musica/Mrs magic - Strawberry Guy (Instrumental - Strings Version).mp3';
 
   function init() {
     audio = new window.Audio(MUSIC_SRC);
