@@ -12,9 +12,8 @@ const Game = (() => {
   let jumps = 0;
   let gameOver = false;
   let won = false;
-  let lastObstacleX = 0;
-  let nextObstacleDist = 0;
   let frameCount = 0;
+  let nextSpawnFrame = 0;  // frame em que o próximo obstáculo deve aparecer
   let bgOffset = 0;
   let groundOffset = 0;
   let starOffset = 0;
@@ -142,8 +141,7 @@ const Game = (() => {
     groundOffset = 0;
     starOffset = 0;
     cloudOffset = 0;
-    lastObstacleX = canvas.width;
-    nextObstacleDist = randomObstacleGap();
+    nextSpawnFrame = 120; // primeiro obstáculo aparece após ~2 segundos
 
     CAT.vy          = 0;
     CAT.onGround    = true;
@@ -186,8 +184,9 @@ const Game = (() => {
      Loop principal
   ───────────────────────────────────────── */
   function start() {
-    // Redimensiona AGORA que a tela já está visível
+    // Redimensiona PRIMEIRO — garante canvas.width/height corretos
     resize();
+    // Só depois reseta o estado do jogo
     reset();
     window.addEventListener('resize', resize);
     running = true;
@@ -246,8 +245,8 @@ const Game = (() => {
       CAT.frameTimer = 0;
     }
 
-    /* Obstáculos */
-    if (lastObstacleX - canvas.width < -nextObstacleDist) {
+    /* Obstáculos — spawn por frame */
+    if (frameCount >= nextSpawnFrame) {
       spawnObstacle();
     }
 
@@ -281,8 +280,6 @@ const Game = (() => {
     cloudOffset  = (cloudOffset + 0.5) % (canvas.width + 200);
     updateClouds();
     updateStars();
-
-    lastObstacleX = obstacles.length ? obstacles[obstacles.length - 1].x : 0;
   }
 
   function updateClouds() {
@@ -310,16 +307,16 @@ const Game = (() => {
       type: Math.random() > 0.5 ? 'crystal' : 'plant',
     };
     obstacles.push(obs);
-    lastObstacleX = obs.x;
-    nextObstacleDist = randomObstacleGap();
+    nextSpawnFrame = frameCount + randomObstacleGapFrames();
   }
 
-  function randomObstacleGap() {
-    const base     = 420;  // espaço mínimo bem generoso
-    const variance = 160;  // variação aleatória
-    // Nos primeiros pulos, ainda mais espaço
-    const easyBonus = Math.max(0, (CONFIG.JUMPS_NEEDED - jumps) * 18);
-    return base + easyBonus + Math.random() * variance;
+  function randomObstacleGapFrames() {
+    // A 60fps: 140 frames = ~2.3s, 200 frames = ~3.3s
+    // Nos primeiros pulos dá mais tempo
+    const base    = 140;
+    const extra   = Math.max(0, (CONFIG.JUMPS_NEEDED - jumps) * 6);
+    const variance = 60;
+    return base + extra + Math.floor(Math.random() * variance);
   }
 
   /* ─────────────────────────────────────────
