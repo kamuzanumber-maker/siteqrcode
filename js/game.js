@@ -34,13 +34,13 @@ const Game = (() => {
   };
 
   /* ── Física ── */
-  const GRAVITY    = 0.55;
-  const JUMP_FORCE = -13;
+  const GRAVITY    = 0.48;   // menos gravidade → mais tempo no ar
+  const JUMP_FORCE = -14.5;  // pulo mais alto
   const GROUND_Y   = () => canvas.height - 80;
 
   /* ── Obstáculos ── */
   let obstacles = [];
-  const OBS_SPEED_BASE = 3.5;
+  const OBS_SPEED_BASE = 2.4;  // velocidade inicial mais lenta
   let obsSpeed = OBS_SPEED_BASE;
 
   /* ── Nuvens ── */
@@ -264,7 +264,7 @@ const Game = (() => {
       if (!o.passed && o.x + o.w < CAT.x) {
         o.passed = true;
         jumps++;
-        obsSpeed = OBS_SPEED_BASE + jumps * 0.12;
+        obsSpeed = OBS_SPEED_BASE + jumps * 0.06; // aceleração muito suave
         updateCounter();
         onJumpScored(o.x + o.w / 2, CAT.y + CAT.h / 2);
         if (jumps >= CONFIG.JUMPS_NEEDED) {
@@ -315,10 +315,10 @@ const Game = (() => {
   }
 
   function randomObstacleGap() {
-    const base = 260;
-    const variance = 120;
-    // Mais fácil no início
-    const easyBonus = Math.max(0, (CONFIG.JUMPS_NEEDED - jumps) * 10);
+    const base     = 420;  // espaço mínimo bem generoso
+    const variance = 160;  // variação aleatória
+    // Nos primeiros pulos, ainda mais espaço
+    const easyBonus = Math.max(0, (CONFIG.JUMPS_NEEDED - jumps) * 18);
     return base + easyBonus + Math.random() * variance;
   }
 
@@ -326,7 +326,7 @@ const Game = (() => {
      Colisão (AABB com margem de tolerância)
   ───────────────────────────────────────── */
   function checkCollision(cat, obs) {
-    const margin = 10; // tolerância fofa
+    const margin = 16; // margem de tolerância generosa
     return (
       cat.x + margin           < obs.x + obs.w - margin &&
       cat.x + cat.w - margin   > obs.x + margin         &&
