@@ -77,21 +77,20 @@ const Game = (() => {
   function init(canvasEl) {
     canvas = canvasEl;
     ctx    = canvas.getContext('2d');
-    resize();
-    window.addEventListener('resize', resize);
 
-    // Controles
+    // Controles registrados uma única vez
     document.addEventListener('keydown', onKey);
     canvas.addEventListener('pointerdown', onTap);
-
-    reset();
   }
 
   function resize() {
     if (!canvas) return;
+    // Usa o wrapper pai ou cai para o viewport
     const parent = canvas.parentElement;
-    canvas.width  = parent ? parent.clientWidth : Math.min(window.innerWidth, 640);
-    canvas.height = Math.min(window.innerHeight * 0.42, 280);
+    const w = parent ? parent.clientWidth  : Math.min(window.innerWidth,  640);
+    const h = Math.min(window.innerHeight * 0.44, 290);
+    canvas.width  = Math.max(w, 300);
+    canvas.height = Math.max(h, 180);
     CAT.x = Math.floor(canvas.width * 0.15);
     CAT.y = GROUND_Y() - CAT.h;
     generateStars();
@@ -187,6 +186,10 @@ const Game = (() => {
      Loop principal
   ───────────────────────────────────────── */
   function start() {
+    // Redimensiona AGORA que a tela já está visível
+    resize();
+    reset();
+    window.addEventListener('resize', resize);
     running = true;
     if (raf) cancelAnimationFrame(raf);
     loop();
@@ -194,6 +197,7 @@ const Game = (() => {
 
   function stop() {
     running = false;
+    window.removeEventListener('resize', resize);
     if (raf) { cancelAnimationFrame(raf); raf = null; }
   }
 

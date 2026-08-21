@@ -111,23 +111,10 @@ button:focus-visible {
   align-items: center;
   justify-content: center;
   padding: 1.25rem;
-  transition: opacity 0.45s ease, transform 0.45s cubic-bezier(.34,1.1,.64,1);
-}
-
-.screen.hidden {
+  visibility: hidden;
   opacity: 0;
-  pointer-events: none;
   transform: scale(0.97);
-}
-
-.screen.visible {
-  opacity: 0;
-  pointer-events: all;
-}
-
-.screen.anim-in {
-  opacity: 1;
-  transform: scale(1);
+  pointer-events: none;
 }
 
 /* ─────────────────────────────────────────
@@ -854,6 +841,7 @@ button:focus-visible {
 /* ─────────────────────────────────────────
    Utilitário
 ───────────────────────────────────────── */
+/* Utilitário — esconde elementos não-tela */
 .hidden  { display: none !important; }
 .visible { display: flex !important; }
 

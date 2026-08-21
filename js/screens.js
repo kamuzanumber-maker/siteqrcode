@@ -10,13 +10,23 @@ const Screens = (() => {
       const el = document.getElementById(s);
       if (!el) return;
       if (s === id) {
-        el.classList.remove('hidden');
-        el.classList.add('visible');
-        void el.offsetWidth; // reflow para forçar animação
-        el.classList.add('anim-in');
+        // Torna visível ANTES da animação para que o layout seja calculado
+        el.style.visibility = 'visible';
+        el.style.opacity    = '0';
+        el.style.transform  = 'scale(0.97)';
+        el.style.pointerEvents = 'all';
+        // Força reflow
+        void el.offsetWidth;
+        // Anima entrada
+        el.style.transition = 'opacity 0.45s ease, transform 0.45s cubic-bezier(.34,1.1,.64,1)';
+        el.style.opacity    = '1';
+        el.style.transform  = 'scale(1)';
       } else {
-        el.classList.remove('visible', 'anim-in');
-        el.classList.add('hidden');
+        el.style.opacity    = '0';
+        el.style.transform  = 'scale(0.97)';
+        el.style.pointerEvents = 'none';
+        el.style.visibility = 'hidden';
+        el.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
       }
     });
   }
@@ -27,11 +37,14 @@ const Screens = (() => {
 
   function showGame() {
     show('screen-game');
-    // Pequeno delay para a transição terminar antes de iniciar o jogo
-    setTimeout(() => {
-      Game.reset();
-      Game.start();
-    }, 350);
+    // Aguarda o próximo frame de pintura para garantir que o canvas
+    // já tem dimensões reais antes de iniciar o jogo
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        Game.reset();
+        Game.start();
+      });
+    });
   }
 
   function showWin() {

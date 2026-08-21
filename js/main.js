@@ -33,10 +33,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnRetry = document.getElementById('btn-retry');
   if (btnRetry) {
     btnRetry.addEventListener('click', () => {
-      document.getElementById('gameover-overlay').classList.remove('show');
-      document.getElementById('gameover-overlay').classList.add('hidden');
-      Game.reset();
-      Game.start();
+      const overlay = document.getElementById('gameover-overlay');
+      overlay.classList.remove('show');
+      overlay.classList.add('hidden');
+      // Pequeno delay para o overlay sumir antes de reiniciar
+      setTimeout(() => {
+        Game.reset();
+        Game.start();
+      }, 100);
     });
   }
 
