@@ -79,10 +79,11 @@ const Password = (() => {
   }
 
   function onSuccess(message, redirectUrl) {
-    showMessage(message, 'Acertou! ♡', 'success');
+    const url = redirectUrl || CONFIG.REDIRECT_URL;
+    showMessage(message, 'Senha correta! ✦', 'success');
     const rect = document.getElementById('screen-password').getBoundingClientRect();
     Particles.burst(rect.width / 2, rect.height / 2, 20);
-    setTimeout(() => Screens.showSuccess(), 1200);
+    setTimeout(() => Screens.showSuccess(url), 1000);
   }
 
   function onError(message, btn, input) {
